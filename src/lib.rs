@@ -168,10 +168,26 @@ impl TryFrom<&[u8]> for LegacyTransaction {
         if data.len() < 16 {
             return Err(BitcoinError::InvalidTransaction);
         }
-        let version = i32::from_le_bytes(data[0..4].try_into().map_err(|_| BitcoinError::InvalidTransaction)?);
-        let inputs_count = u32::from_le_bytes(data[4..8].try_into().map_err(|_| BitcoinError::InvalidTransaction)?);
-        let outputs_count = u32::from_le_bytes(data[8..12].try_into().map_err(|_| BitcoinError::InvalidTransaction)?);
-        let lock_time = u32::from_le_bytes(data[12..16].try_into().map_err(|_| BitcoinError::InvalidTransaction)?);
+        let version = i32::from_le_bytes(
+            data[0..4]
+                .try_into()
+                .map_err(|_| BitcoinError::InvalidTransaction)?,
+        );
+        let inputs_count = u32::from_le_bytes(
+            data[4..8]
+                .try_into()
+                .map_err(|_| BitcoinError::InvalidTransaction)?,
+        );
+        let outputs_count = u32::from_le_bytes(
+            data[8..12]
+                .try_into()
+                .map_err(|_| BitcoinError::InvalidTransaction)?,
+        );
+        let lock_time = u32::from_le_bytes(
+            data[12..16]
+                .try_into()
+                .map_err(|_| BitcoinError::InvalidTransaction)?,
+        );
         Ok(LegacyTransaction {
             version,
             inputs: Vec::with_capacity(inputs_count as usize),
